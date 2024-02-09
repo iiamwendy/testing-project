@@ -1,6 +1,6 @@
 // Ordine.test.ts
 
-import { newOrder, ordini } from "./ordine";
+import { newOrder, ordini, addGiftcard} from "./ordine";
 
 
 // Costanti per i dati del cliente
@@ -62,3 +62,109 @@ describe('Controllo del codice fiscale', () => {
     const modifiedCF = cutomerData.cf.replace("cwhcvhsv", "");
     expect(modifiedCF.length).toBe(9);  });
 });
+
+
+
+// Test per la funzione addGiftcard
+describe('addGiftcard function', () => {
+    // Happy path
+    test('should add a giftcard with a valid amount (10)', () => {
+      const order = newOrder(CLIENTE_ALESSANDRO);
+      addGiftcard(order, 13);
+  
+      expect(order.giftcards.length).toBe(1);
+      expect(order.giftcards[0].amount).toBe(10);
+      expect(order.giftcards[0].type).toBe('digitale');
+
+    });
+  
+    // Special cases
+    test('should add a giftcard with a valid amount (20)', () => {
+      const order = newOrder(CLIENTE_ALESSANDRO);
+      addGiftcard(order, 25);
+  
+      expect(order.giftcards.length).toBe(1);
+      expect(order.giftcards[0].amount).toBe(20);
+      expect(order.giftcards[0].type).toBe('cartacea');
+
+    });
+  
+    test('should add a giftcard with a valid amount (50)', () => {
+      const order = newOrder(CLIENTE_ALESSANDRO);
+      addGiftcard(order, 50);
+  
+      expect(order.giftcards.length).toBe(1);
+      expect(order.giftcards[0].amount).toBe(50);
+      expect(order.giftcards[0].type).toBe('digitale');
+
+    });
+  
+    test('should add a giftcard with a valid amount (100)', () => {
+      const order = newOrder(CLIENTE_ALESSANDRO);
+      addGiftcard(order, 100);
+  
+      expect(order.giftcards.length).toBe(1);
+      expect(order.giftcards[0].amount).toBe(100);
+      expect(order.giftcards[0].type).toBe('cartacea');
+
+    });
+  
+    // Edge cases
+    test('should throw an error for an invalid amount (5)', () => {
+      const order = newOrder(CLIENTE_ALESSANDRO);
+  
+      try {
+        addGiftcard(order, 5);
+        fail('La funzione dovrebbe lanciare un errore, ma non l\'ha fatto.');
+      } catch (error) {
+        expect(error.message).toBe('L\'importo della giftcard deve essere 10, 20, 50 o 100.');
+      }
+    });
+  
+    // Eccezioni
+    test('should throw an error for an invalid amount (25)', () => {
+      const order = newOrder(CLIENTE_ALESSANDRO);
+  
+      try {
+        addGiftcard(order, 25);
+        fail('La funzione dovrebbe lanciare un errore, ma non l\'ha fatto.');
+      } catch (error) {
+        expect(error.message).toBe('L\'importo della giftcard deve essere 10, 20, 50 o 100.');
+      }
+    });
+
+
+// Nuovi test
+test('should update quantity for an existing giftcard with the same amount and type', () => {
+    const order = newOrder(CLIENTE_ALESSANDRO);
+    addGiftcard(order, 10);
+    addGiftcard(order, 13); // Aggiunge una giftcard con lo stesso taglio e tipo
+
+    expect(order.giftcards.length).toBe(1);
+    expect(order.giftcards[0].amount).toBe(20);
+    expect(order.giftcards[0].type).toBe('digitale');
+  });
+
+  test('should add a new giftcard for a different amount', () => {
+    const order = newOrder(CLIENTE_ALESSANDRO);
+    addGiftcard(order, 10);
+    addGiftcard(order, 20); // Aggiunge una giftcard con importo diverso
+
+    expect(order.giftcards.length).toBe(2);
+    expect(order.giftcards[0].amount).toBe(10);
+    expect(order.giftcards[1].amount).toBe(20);
+  });
+
+  test('should add a new giftcard for a different type', () => {
+    const order = newOrder(CLIENTE_ALESSANDRO);
+    addGiftcard(order, 10);
+    addGiftcard(order, 10, 'cartacea'); // Aggiunge una giftcard con tipo diverso
+
+    expect(order.giftcards.length).toBe(2);
+    expect(order.giftcards[0].type).toBe('digitale');
+    expect(order.giftcards[1].type).toBe('cartacea');
+  });
+});
+
+  
+  

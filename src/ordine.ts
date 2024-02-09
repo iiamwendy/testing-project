@@ -6,11 +6,12 @@ interface CustomerData {
     cognome: string;
     email: string;
   }
+
   
   interface Order {
     customerData: CustomerData;
-    giftcards: any[]; // Tipo degli oggetti giftcards da definire in base alle tue esigenze
-  }
+    giftcards: Giftcard[];
+}
   
   export const ordini: Order[] = []; // Esporta la variabile ordini
   
@@ -33,3 +34,31 @@ interface CustomerData {
     return order;
   }
   
+
+  interface Giftcard {
+    amount: number;
+    type: string; // Aggiunto il tipo della giftcard
+  }
+
+
+  export function addGiftcard(order: Order, amount: number, type: string = 'digitale'): void {
+    // Verifica che l'importo della giftcard sia valido
+    if (![10, 20, 50, 100].includes(amount)) {
+      throw new Error('L\'importo della giftcard deve essere 10, 20, 50 o 100.');
+    }
+  
+
+    const existingGiftcard = order.giftcards.find((giftcard) => giftcard.amount === amount && giftcard.type === type);
+
+    if (existingGiftcard) {
+      // Se esiste già una giftcard con lo stesso taglio e tipo, aggiorna la quantità
+      existingGiftcard.amount += amount;
+    } else {
+      // Altrimenti, aggiungi una nuova giftcard all'ordine
+      const giftcard: Giftcard = {
+        amount,
+        type,
+      };
+      order.giftcards.push(giftcard);
+    }
+}
