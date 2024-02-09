@@ -2,9 +2,10 @@
 
 import { newOrder, ordini } from "./ordine";
 
+
 // Costanti per i dati del cliente
 const CLIENTE_ALESSANDRO = {
-  codiceFiscale: 'TTFAW738',
+  codiceFiscale: 'HTKDMMEAA98HHFRJ',
   nome: 'Alessandro',
   cognome: 'Arrigoni',
   email: 'arrigoni@gmail.com',
@@ -24,7 +25,7 @@ describe('newOrder function', () => {
     // Simula un ordine già esistente con lo stesso codice fiscale
     const existingOrder = {
       customerData: {
-        codiceFiscale: 'EFJQHJHFAIFQUFAIOHFWIAHWIFU',
+        codiceFiscale: 'ITFFRHMTONWW3RHQ',
         nome: 'Altro',
         cognome: 'Cliente',
         email: 'altro@email.com',
@@ -36,7 +37,7 @@ describe('newOrder function', () => {
     try {
       // Utilizza un codice fiscale specifico per far fallire il test
       newOrder({
-        codiceFiscale: 'CodiceSpecificoDaFareFallire',
+        codiceFiscale: 'HDRMWWTTNP9BTRJ',
         nome: 'Mario',
         cognome: 'Rossi',
         email: 'mario@email.com',
@@ -45,7 +46,7 @@ describe('newOrder function', () => {
       fail('La funzione dovrebbe lanciare un errore, ma non l\'ha fatto.');
     } catch (error) {
       // Verifica che l'errore sia quello atteso
-      expect(error.message).toBe('Errore intenzionale: codice fiscale specifico');
+      expect(error.message).toBe('Il codice fiscale deve avere esattamente 16 caratteri.');
     }
   });
 });
@@ -54,10 +55,10 @@ describe('newOrder function', () => {
 describe('Controllo del codice fiscale', () => {
   test('should check the length and replacement of the codice fiscale', () => {
     const cutomerData = {
-      cf: 'TTFAW738123456789uiugh',
+      cf: 'TTFWAD03HDUNRTDF',
     };
 
     expect(cutomerData.cf.length === 16).toBe(true);
-    expect(cutomerData.cf.replace("cwhcvhsv", "").length === 9).toBe(true);
-  });
+    const modifiedCF = cutomerData.cf.replace("cwhcvhsv", "");
+    expect(modifiedCF.length).toBe(9);  });
 });

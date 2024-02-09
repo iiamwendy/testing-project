@@ -1,46 +1,35 @@
-// Ordine.ts
+// ordine.ts
 
-
-type GiftcardType = "digitale" | "cartacea";
-type GiftcardValue = 10 | 20 | 50 | 100;
-
-type CustomerData = {
+interface CustomerData {
     codiceFiscale: string;
     nome: string;
     cognome: string;
     email: string;
-  };
+  }
   
-  type Order = {
+  interface Order {
     customerData: CustomerData;
-    giftcards: {
-      tipo: GiftcardType;
-      taglio: GiftcardValue;
-      quantita: number;
-    }[];
-  };
+    giftcards: any[]; // Tipo degli oggetti giftcards da definire in base alle tue esigenze
+  }
   
-  // Un array per simulare la persistenza degli ordini (usa un database reale in un'applicazione del mondo reale)
-  export const ordini: Order[] = [];
+  export const ordini: Order[] = []; // Esporta la variabile ordini
   
   export function newOrder(customerData: CustomerData): Order {
-    // Modifiche per far fallire il test
-    if (customerData.codiceFiscale === 'TTFAW738') {
-      throw new Error('Errore intenzionale: codice fiscale specifico');
+    // Verifica che il codice fiscale abbia esattamente 16 caratteri
+    if (customerData.codiceFiscale.length !== 16) {
+      throw new Error('Il codice fiscale deve avere esattamente 16 caratteri.');
     }
   
-    const existingOrder = ordini.find((ordine) => ordine.customerData.codiceFiscale === customerData.codiceFiscale);
+    // Altri controlli o logica per la creazione dell'ordine
   
-    if (existingOrder) {
-      throw new Error('Ordine con lo stesso codice fiscale già esistente');
-    }
-  
-    const newOrder: Order = {
+    const order: Order = {
       customerData,
       giftcards: [],
     };
   
-    ordini.push(newOrder);
+    // Aggiungi l'ordine alla lista degli ordini
+    ordini.push(order);
   
-    return newOrder;
+    return order;
   }
+  
