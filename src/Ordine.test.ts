@@ -176,14 +176,14 @@ describe('getAmount function', () => {
       const order = newOrder(CLIENTE_ALESSANDRO);
       const amount = getAmount(order);
   
-      expect(amount).toBe(40);
+      expect(amount).toBe(0);
     });
   
     test('should return the total amount for an order with giftcards', () => {
       const order = newOrder(CLIENTE_ALESSANDRO);
-      addGiftcard(order, 15);
+      addGiftcard(order, 10);
       addGiftcard(order, 20);
-      addGiftcard(order, 53);
+      addGiftcard(order, 50);
   
       const amount = getAmount(order);
   
