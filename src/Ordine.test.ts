@@ -1,6 +1,6 @@
 // Ordine.test.ts
 
-import { newOrder, ordini, addGiftcard} from "./ordine";
+import { newOrder, ordini, addGiftcard, getAmount} from "./ordine";
 
 
 // Costanti per i dati del cliente
@@ -164,7 +164,30 @@ test('should update quantity for an existing giftcard with the same amount and t
     expect(order.giftcards[0].type).toBe('digitale');
     expect(order.giftcards[1].type).toBe('cartacea');
   });
+
+
+
+  
 });
 
   
+describe('getAmount function', () => {
+    test('should return 0 for an order without giftcards', () => {
+      const order = newOrder(CLIENTE_ALESSANDRO);
+      const amount = getAmount(order);
   
+      expect(amount).toBe(40);
+    });
+  
+    test('should return the total amount for an order with giftcards', () => {
+      const order = newOrder(CLIENTE_ALESSANDRO);
+      addGiftcard(order, 15);
+      addGiftcard(order, 20);
+      addGiftcard(order, 53);
+  
+      const amount = getAmount(order);
+  
+      expect(amount).toBe(80);
+    });
+
+});

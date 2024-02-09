@@ -47,6 +47,8 @@ interface CustomerData {
       throw new Error('L\'importo della giftcard deve essere 10, 20, 50 o 100.');
     }
   
+   
+    
 
     const existingGiftcard = order.giftcards.find((giftcard) => giftcard.amount === amount && giftcard.type === type);
 
@@ -61,4 +63,10 @@ interface CustomerData {
       };
       order.giftcards.push(giftcard);
     }
+    
 }
+
+
+export function getAmount(order: Order): number {
+    return order.giftcards.reduce((totalAmount, giftcard) => totalAmount + giftcard.amount, 0);
+  }
