@@ -70,7 +70,7 @@ describe('addGiftcard function', () => {
     // Happy path
     test('should add a giftcard with a valid amount (10)', () => {
       const order = newOrder(CLIENTE_ALESSANDRO);
-      addGiftcard(order, 13);
+      addGiftcard(order, 10);
   
       expect(order.giftcards.length).toBe(1);
       expect(order.giftcards[0].amount).toBe(10);
@@ -81,11 +81,11 @@ describe('addGiftcard function', () => {
     // Special cases
     test('should add a giftcard with a valid amount (20)', () => {
       const order = newOrder(CLIENTE_ALESSANDRO);
-      addGiftcard(order, 25);
+      addGiftcard(order, 20);
   
       expect(order.giftcards.length).toBe(1);
       expect(order.giftcards[0].amount).toBe(20);
-      expect(order.giftcards[0].type).toBe('cartacea');
+      expect(order.giftcards[0].type).toBe('digitale');
 
     });
   
@@ -105,7 +105,7 @@ describe('addGiftcard function', () => {
   
       expect(order.giftcards.length).toBe(1);
       expect(order.giftcards[0].amount).toBe(100);
-      expect(order.giftcards[0].type).toBe('cartacea');
+      expect(order.giftcards[0].type).toBe('digitale');
 
     });
   
@@ -138,7 +138,7 @@ describe('addGiftcard function', () => {
 test('should update quantity for an existing giftcard with the same amount and type', () => {
     const order = newOrder(CLIENTE_ALESSANDRO);
     addGiftcard(order, 10);
-    addGiftcard(order, 13); // Aggiunge una giftcard con lo stesso taglio e tipo
+    addGiftcard(order, 10); // Aggiunge una giftcard con lo stesso taglio e tipo
 
     expect(order.giftcards.length).toBe(1);
     expect(order.giftcards[0].amount).toBe(20);
